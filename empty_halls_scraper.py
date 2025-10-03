@@ -233,6 +233,15 @@ HTML_TEMPLATE = """
         select, input, button { padding: 10px 15px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; }
         button { background: #667eea; color: white; border: none; cursor: pointer; font-weight: 600; }
         button:hover { background: #5568d3; }
+
+        /* --- Mobile layout for controls --- */
+        @media (max-width: 600px) {
+            .control-row { flex-direction: column; gap: 10px; align-items: stretch; }
+            .mobile-day-row { width: 100%; margin-bottom: 0; }
+            .mobile-time-row { display: flex; flex-direction: row; gap: 10px; width: 100%; }
+            .mobile-time-row > * { flex: 1 1 50%; min-width: 0; }
+            #daySelect { width: 100%; }
+        }
         .current-time { background: #e3f2fd; padding: 15px 25px; display: flex; justify-content: space-between; }
         .time-display { font-size: 18px; font-weight: bold; color: #1565c0; }
         .summary { background: #f8f9fa; padding: 20px; margin: 20px; border-radius: 8px; display: flex; justify-content: space-around; text-align: center; }
@@ -270,16 +279,20 @@ HTML_TEMPLATE = """
             </div>
             <div class=\"controls\">
                 <h3 style=\"margin-bottom: 15px;\">🔍 Gjej Sallat e Lira</h3>
-                <div class=\"control-row\">
-                    <select id=\"daySelect\">
-                        <option value=\"E Hënë\">E Hënë</option>
-                        <option value=\"E Martë\">E Martë</option>
-                        <option value=\"E Mërkurë\">E Mërkurë</option>
-                        <option value=\"E Enjte\">E Enjte</option>
-                        <option value=\"E Premte\">E Premte</option>
-                    </select>
-                    <input type=\"time\" id=\"timeSelect\" value=\"09:00\">
-                    <button onclick=\"useCurrentTime()\">⏰ Tani</button>
+                <div class="control-row">
+                    <div class="mobile-day-row">
+                        <select id="daySelect">
+                            <option value="E Hënë">E Hënë</option>
+                            <option value="E Martë">E Martë</option>
+                            <option value="E Mërkurë">E Mërkurë</option>
+                            <option value="E Enjte">E Enjte</option>
+                            <option value="E Premte">E Premte</option>
+                        </select>
+                    </div>
+                    <div class="mobile-time-row">
+                        <input type="time" id="timeSelect" value="09:00">
+                        <button onclick="useCurrentTime()">⏰ Tani</button>
+                    </div>
                 </div>
             </div>
             <div id=\"alerts\"></div>
