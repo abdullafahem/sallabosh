@@ -1,0 +1,179 @@
+<html>
+    <head>
+        <script>
+            function showViti(str) {
+                var i;
+                for(i=document.getElementById("ddlViti").options.length-1;i>=1;i--)
+                {
+                    document.getElementById("ddlViti").remove(i);
+                }
+                var j;
+                for(j=document.getElementById("ddlParaleli").options.length-1;j>=1;j--)
+                {
+                    document.getElementById("ddlParaleli").remove(j);
+                }
+                if (str == "") {
+                    document.getElementById("ddlViti").innerHTML = "";
+                    return;
+                } else {
+                    if (window.XMLHttpRequest) {
+                        // code for IE7+, Firefox, Chrome, Opera, Safari
+                        xmlhttp = new XMLHttpRequest();
+                    } else {
+                        // code for IE6, IE5
+                        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+                    xmlhttp.onreadystatechange = function() {
+                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                            document.getElementById("ddlViti").innerHTML = xmlhttp.responseText;
+                        }
+                    }
+                    xmlhttp.open("GET",'getYear/'+str,true);
+                    xmlhttp.send();
+                }
+            };
+            
+            function showParalel(str) {
+                if (str == "") {
+                    document.getElementById("ddlParaleli").innerHTML = "";
+                    return;
+                } else {
+                    if (window.XMLHttpRequest) {
+                        // code for IE7+, Firefox, Chrome, Opera, Safari
+                        xmlhttp = new XMLHttpRequest();
+                    } else {
+                        // code for IE6, IE5
+                        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+                    xmlhttp.onreadystatechange = function() {
+                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                            document.getElementById("ddlParaleli").innerHTML = xmlhttp.responseText;
+                        }
+                    }
+                    xmlhttp.open("GET",'getGroup/'+document.getElementById("ddlDega").value+'/'+str,true);
+                    xmlhttp.send();
+                }
+            }
+        </script>
+        <title>Orari Mësimor | Fakulteti i Shkencave të Natyrës</title>
+        <link rel="stylesheet" type="text/css" href="css/main.css">  
+        <link rel="stylesheet" type="text/css" href="lib/tooltipster-master/css/tooltipster.css"/>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.0.min.js"></script>
+        <script type="text/javascript" src="lib/tooltipster-master/js/jquery.tooltipster.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('.tooltip').tooltipster();
+            });
+        </script>
+    </head>
+    <body>
+        <table class="contentTextFormat" cellpadding="0" cellspacing="0" >            
+            <tr style="background-color: #F1F1F1; height: 11%">
+                <td colspan="6" style="border: none; border-bottom: 1px solid #DDD">
+                    <table cellpadding="0" cellspacing="0" style="width: 100%; height: 100%" border="0">
+                        <tr>
+                            <td style="vertical-align: central; width: 40px">
+                                <img class="logo" alt="Logoja e FSHN" src="img/customLogo.gif">
+                            </td>
+                            <td style="vertical-align: central; width: 150px">
+                                <span class="headerTextFormat">Orari Mësimor</span>
+                            </td>
+                            <td style="vertical-align: central">                                
+                                <table cellpadding="0" cellspacing="0" style="width:100%" border="0">
+                                    <tr>
+                                        <td width='60%' style="vertical-align: central">
+                                            <form accept-charset="utf-8" style="height: 14px; ;" action="student" method="post">
+                                                <select id='ddlDega' onchange="showViti(this.value)" name="dega" style="height: 30px" class="dropDownList">
+                                                    <option value="0" >--zgjidh dega--</option>
+                                                    <option value=' "Bachelor" në "Inxhinieri Matematike dhe Informatike"'> "Bachelor" në "Inxhinieri Matematike dhe Informatike"</option><option value='"Bachelor" në " Data Science dhe Inxhinieri Informatike"'>"Bachelor" në " Data Science dhe Inxhinieri Informatike"</option><option value='Bachelor në "Biologji"'>Bachelor në "Biologji"</option><option value='Bachelor në "Bioteknologji"'>Bachelor në "Bioteknologji"</option><option value='Bachelor në "Fizikë dhe Shkenca kompjuterike"'>Bachelor në "Fizikë dhe Shkenca kompjuterike"</option><option value='Bachelor në "Fizikë"'>Bachelor në "Fizikë"</option><option value='Bachelor në "Informatikë"'>Bachelor në "Informatikë"</option><option value='Bachelor në "Inxhinieri Kimike"'>Bachelor në "Inxhinieri Kimike"</option><option value='Bachelor në "Inxhinieria dhe Kimia e Ushqimeve"'>Bachelor në "Inxhinieria dhe Kimia e Ushqimeve"</option><option value='Bachelor në "Kimi dhe Teknologji Ushqimore"'>Bachelor në "Kimi dhe Teknologji Ushqimore"</option><option value='Bachelor në "Kimi Farmaceutike"'>Bachelor në "Kimi Farmaceutike"</option><option value='Bachelor në "Kimi Industriale e Mjedisore"'>Bachelor në "Kimi Industriale e Mjedisore"</option><option value='Bachelor në "Kimi"'>Bachelor në "Kimi"</option><option value='Bachelor në "Matematikë"'>Bachelor në "Matematikë"</option><option value='Bachelor në "Teknologji Informacioni dhe komunikimi"'>Bachelor në "Teknologji Informacioni dhe komunikimi"</option><option value='Bachelor në “Shkencat Natyrore dhe Mjedisore”'>Bachelor në “Shkencat Natyrore dhe Mjedisore”</option><option value='Master i Shkencave në "Biologji Mjedisore"'>Master i Shkencave në "Biologji Mjedisore"</option><option value='Master i Shkencave në "Biologji Molekulare"'>Master i Shkencave në "Biologji Molekulare"</option><option value='Master i Shkencave në "Biologji", me profil "Mësues biologjie për arsimin e mesëm dhe të lartë"'>Master i Shkencave në "Biologji", me profil "Mësues biologjie për arsimin e mesëm dhe të lartë"</option><option value='Master i Shkencave në "Bioteknologji Molekulare dhe Industriale"'>Master i Shkencave në "Bioteknologji Molekulare dhe Industriale"</option><option value='Master i Shkencave në "Data Science and Artificial Intelligence"'>Master i Shkencave në "Data Science and Artificial Intelligence"</option><option value='Master i Shkencave në "Fizikë"'>Master i Shkencave në "Fizikë"</option><option value='Master i Shkencave në "Fizikë", me profil "Mësues Fizike për arsimin e mesëm dhe të lartë"'>Master i Shkencave në "Fizikë", me profil "Mësues Fizike për arsimin e mesëm dhe të lartë"</option><option value='Master i Shkencave në "Informatikë"'>Master i Shkencave në "Informatikë"</option><option value='Master i Shkencave në "Informatikë", me profil "Mësues Informatike për arsimin e mesëm dhe të lartë"'>Master i Shkencave në "Informatikë", me profil "Mësues Informatike për arsimin e mesëm dhe të lartë"</option><option value='Master i Shkencave në "Informatikë", me profil "Mësues Informatike për arsimin e mesëm i lartë"'>Master i Shkencave në "Informatikë", me profil "Mësues Informatike për arsimin e mesëm i lartë"</option><option value='Master i Shkencave në "Information Systems Engineering"'>Master i Shkencave në "Information Systems Engineering"</option><option value='Master i Shkencave në "Inxhinieri Matematike dhe Informatike"'>Master i Shkencave në "Inxhinieri Matematike dhe Informatike"</option><option value='Master i Shkencave në "Inxhinieria e Proceseve Kimike"'>Master i Shkencave në "Inxhinieria e Proceseve Kimike"</option><option value='Master i Shkencave në "Kimi Industriale dhe Mjedisore"'>Master i Shkencave në "Kimi Industriale dhe Mjedisore"</option><option value='Master i Shkencave në "Kimi"'>Master i Shkencave në "Kimi"</option><option value='Master i Shkencave në "Kimi", me profil "Mësues Kimie për arsimin e mesëm dhe të lartë"'>Master i Shkencave në "Kimi", me profil "Mësues Kimie për arsimin e mesëm dhe të lartë"</option><option value='Master i Shkencave në "Matematikë"'>Master i Shkencave në "Matematikë"</option><option value='Master i Shkencave në "Matematikë", me profil "Mësues Matematike për arsimin e mesëm dhe të lartë"'>Master i Shkencave në "Matematikë", me profil "Mësues Matematike për arsimin e mesëm dhe të lartë"</option><option value='Master i Shkencave në "Shkencat dhe Teknologjite Ushqimore"'>Master i Shkencave në "Shkencat dhe Teknologjite Ushqimore"</option><option value='Master Profesional në "Bioteknologji Mjedisore"'>Master Profesional në "Bioteknologji Mjedisore"</option><option value='Master Profesional në "Informatikë Biznesi"'>Master Profesional në "Informatikë Biznesi"</option><option value='Master Profesional në "Inxhinieri Matematike dhe Informatike"' selected>Master Profesional në "Inxhinieri Matematike dhe Informatike"</option>                                                </select>
+                                                <select onchange='showParalel(this.value)' id="ddlViti" name="viti" style="height: 30px" class="dropDownListViti">;
+                                                    <option value="0" "selected">--zgjidh viti--</option><option selected value="1">1</option>
+                                                </select>
+                                                <select id="ddlParaleli" name="paraleli" style="height: 30px" class="dropDownListViti">';
+                                                    <option value="0" "selected">--zgjidh paraleli--</option><option selected value="A1">A1</option>
+                                                </select> 
+                                                <input name="submit" type="submit" value="Afisho" style="vertical-align: middle; border: 1px solid #DDD; 
+                                                    background-color: #F5F8FA; height: 30px;">
+                                                <a style='text-decoration: none' href='shkarkoStudent/Master Profesional në "Inxhinieri Matematike dhe Informatike"/1/A1'>                                                
+                                                <img alt="shkarko si excel" style="vertical-align: middle; padding-left: 15px; width: 24px" class="tooltip" title="Shkarko" src="img/excelLogo.png">
+                                                </a>                                            </form>
+                                        </td>                                            
+                                    </tr>
+                                </table> 
+                            </td>
+                            <td style="vertical-align: central; width: 5px">
+                                <p class="headerLink">
+                                    <a href="https://play.google.com/store/apps/details?id=al.edu.fshn.orarimesimor&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-AC-global-none-all-co-pr-py-PartBadges-Oct1515-1">
+                                        <img style="width: 150px; vertical-align: middle" alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" />
+                                    </a>   
+                                </p>
+                            </td>
+                            <td style="vertical-align: central; width: 1px">
+                                <span class="headerLink">|</span>
+                            </td>
+                            <td style="vertical-align: central; width: 5px">
+                                <a href="student">
+                                    <span class="headerLink">Student</span>
+                                </a>   
+                            </td>
+                            <td style="vertical-align: central; width: 1px">
+                                <span class="headerLink">|</span>
+                            </td>
+                            <td style="vertical-align: central; width: 5px">
+                                <a href="pedagog">
+                                    <span class="headerLink">Pedagog</span>
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>                       
+                        
+            <tr style="height: 5%">
+                <th width="7%" style="border: none"></th>
+                <th width="19%" style="border: none">E Hënë</th>
+                <th width="19%" style="border: none">E Martë</th>
+                <th width="19%" style="border: none">E Mërkurë</th>
+                <th width="18%" style="border: none">E Enjte</th>
+                <th width="18%" style="border: none">E Premte</th>
+            </tr> 
+            <tr>
+                <th style="border-left: 1px solid #DDD">08:00-09:00</th>                 
+                <td class="bodyTd">&nbsp</td><td class="bodyTd">&nbsp</td><td class="bodyTd">&nbsp</td><td class="bodyTd">&nbsp</td><td class="bodyTd">&nbsp</td>                
+            </tr>
+            <tr>
+                <th style="border-left: 1px solid #DDD">09:00-10:00</th>
+                <td class="bodyTd">&nbsp</td><td class="bodyTd"><div class="lendaNjejte"; style="background-color:#FEF3CD"><span style="padding-left: 2px">Statistikë e procese rasti | Leksion | Markela Muca | Salla (105C) </span></div></td><td class="bodyTd">&nbsp</td><td class="bodyTd"><div class="lendaNjejte"; style="background-color:#DDE6FB"><span style="padding-left: 2px">Optimizim numerik dhe vizualizim | Seminar | Aurora Simoni | Salla (304C) </span></div></td><td class="bodyTd">&nbsp</td>            </tr>
+            <tr>
+                <th style="border-left: 1px solid #DDD">10:00-11:00</th>
+                <td class="bodyTd">&nbsp</td><td class="bodyTd"><div class="lendaNjejte"; style="background-color:#FEF3CD"><span style="padding-left: 2px">Statistikë e procese rasti | Seminar | Markela Muca | Salla (105C) </span></div></td><td class="bodyTd">&nbsp</td><td class="bodyTd"><div class="lendaNjejte"; style="background-color:#DDE6FB"><span style="padding-left: 2px">Optimizim numerik dhe vizualizim | Seminar | Aurora Simoni | Salla (301A) </span></div></td><td class="bodyTd">&nbsp</td>            </tr>
+            <tr>
+                <th style="border-left: 1px solid #DDD">11:00-12:00</th>
+                <td class="bodyTd">&nbsp</td><td class="bodyTd"><div class="lendaNjejte"; style="background-color:#FEF3CD"><span style="padding-left: 2px">Statistikë e procese rasti | Seminar | Markela Muca | Salla (KlasaD6) </span></div></td><td class="bodyTd"><div class="lendaNjejte"; style="background-color:#FEF3CD"><span style="padding-left: 2px">Statistikë e procese rasti | Leksion | Markela Muca | Salla (204C) </span></div></td><td class="bodyTd">&nbsp</td><td class="bodyTd">&nbsp</td>            </tr>
+            <tr>
+                <th style="border-left: 1px solid #DDD">12:00-13:00</th>
+                <td class="bodyTd">&nbsp</td><td class="bodyTd"><div class="lendaNjejte"; style="background-color:#DAF2CC"><span style="padding-left: 2px">Matematikë numerike e zbatime | Seminar | Amanda Zeqiri | Salla (105C) </span></div></td><td class="bodyTd"><div class="lendaNjejte"; style="background-color:#FEF3CD"><span style="padding-left: 2px">Statistikë e procese rasti | Leksion | Arber Qoshja | Salla (Lab) </span></div></td><td class="bodyTd"><div class="lendaNjejte"; style="background-color:#DDE6FB"><span style="padding-left: 2px">Optimizim numerik dhe vizualizim | Seminar | Aurora Simoni | Salla (201A) </span></div></td><td class="bodyTd">&nbsp</td>            </tr>
+            <tr>
+                <th style="border-left: 1px solid #DDD">13:00-14:00</th>
+                <td class="bodyTd"><div class="lendaNjejte"; style="background-color:#DDE6FB"><span style="padding-left: 2px">Optimizim numerik dhe vizualizim | Leksion | Aurora Simoni | Salla (304/1C) </span></div></td><td class="bodyTd">&nbsp</td><td class="bodyTd"><div class="lendaNjejte"; style="background-color:#FEF3CD"><span style="padding-left: 2px">Statistikë e procese rasti | Seminar | Arber Qoshja | Salla (Lab) </span></div></td><td class="bodyTd">&nbsp</td><td class="bodyTd">&nbsp</td>            </tr>
+            <tr>
+                <th style="border-left: 1px solid #DDD">14:00-15:00</th>
+                <td class="bodyTd"><div class="lendaNjejte"; style="background-color:#DDE6FB"><span style="padding-left: 2px">Optimizim numerik dhe vizualizim | Leksion | Aurora Simoni | Salla (304/1C) </span></div></td><td class="bodyTd"><div class="lendaNjejte"; style="background-color:#F8D3D4"><span style="padding-left: 2px">Zbatime numerike të EDZ | Seminar | Frederik Dara | Salla (Lab) </span></div></td><td class="bodyTd">&nbsp</td><td class="bodyTd"><div class="lendaNjejte"; style="background-color:#DAF2CC"><span style="padding-left: 2px">Matematikë numerike e zbatime | Leksion | Amanda Zeqiri | Salla (KlasaD5) </span></div></td><td class="bodyTd">&nbsp</td>            </tr>
+            <tr>
+                <th style="border-left: 1px solid #DDD">15:00-16:00</th>
+                <td class="bodyTd"><div class="lendaNjejte"; style="background-color:#DDE6FB"><span style="padding-left: 2px">Optimizim numerik dhe vizualizim | Leksion | Aurora Simoni | Salla (304/1C) </span></div></td><td class="bodyTd"><div class="lendaNjejte"; style="background-color:#F8D3D4"><span style="padding-left: 2px">Zbatime numerike të EDZ | Seminar | Frederik Dara | Salla (304C) </span></div></td><td class="bodyTd">&nbsp</td><td class="bodyTd">&nbsp</td><td class="bodyTd">&nbsp</td>            </tr>
+            <tr>
+                <th style="border-left: 1px solid #DDD">16:00-17:00</th>
+                <td class="bodyTd">&nbsp</td><td class="bodyTd"><div class="lendaNjejte"; style="background-color:#F8D3D4"><span style="padding-left: 2px">Zbatime numerike të EDZ | Leksion | Frederik Dara | Salla (304C) </span></div></td><td class="bodyTd">&nbsp</td><td class="bodyTd">&nbsp</td><td class="bodyTd">&nbsp</td>            </tr>
+            <tr>
+                <th style="border-left: 1px solid #DDD">17:00-18:00</th>
+                <td class="bodyTd"><div class="lendaNjejte"; style="background-color:#F8D3D4"><span style="padding-left: 2px">Zbatime numerike të EDZ | Leksion | Frederik Dara | Salla (204C) </span></div></td><td class="bodyTd">&nbsp</td><td class="bodyTd">&nbsp</td><td class="bodyTd">&nbsp</td><td class="bodyTd">&nbsp</td>            </tr>
+            <tr>
+                <th style="border-left: 1px solid #DDD">18:00-19:00</th>
+                <td class="bodyTd"><div class="lendaNjejte"; style="background-color:#DAF2CC"><span style="padding-left: 2px">Matematikë numerike e zbatime | Leksion | Frederik Dara | Salla (204C) </span></div></td><td class="bodyTd">&nbsp</td><td class="bodyTd">&nbsp</td><td class="bodyTd">&nbsp</td><td class="bodyTd">&nbsp</td>            </tr>
+            <tr>
+                <th style="border-left: 1px solid #DDD; border-bottom: 1px solid #DDD">19:00-20:00</th>
+                <td class="bodyTd"><div class="lendaNjejte"; style="background-color:#DAF2CC"><span style="padding-left: 2px">Matematikë numerike e zbatime | Seminar | Frederik Dara | Salla (304C) </span></div></td><td class="bodyTd">&nbsp</td><td class="bodyTd">&nbsp</td><td class="bodyTd">&nbsp</td><td class="bodyTd">&nbsp</td>            </tr>
+        </table>
+    </body>
+</html>
