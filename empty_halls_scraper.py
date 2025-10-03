@@ -241,6 +241,8 @@ HTML_TEMPLATE = """
             .mobile-time-row { display: flex; flex-direction: row; gap: 10px; width: 100%; }
             .mobile-time-row > * { flex: 1 1 50%; min-width: 0; }
             #daySelect { width: 100%; }
+            .mobile-search-row { display: block !important; width: 100%; margin-top: 0; }
+            #searchHallsBtn { width: 100%; margin-left: 0 !important; }
         }
         .current-time { background: #e3f2fd; padding: 15px 25px; display: flex; justify-content: space-between; }
         .time-display { font-size: 18px; font-weight: bold; color: #1565c0; }
@@ -288,12 +290,15 @@ HTML_TEMPLATE = """
                             <option value="E Enjte">E Enjte</option>
                             <option value="E Premte">E Premte</option>
                         </select>
+                        </div>
+                        <div class="mobile-time-row">
+                            <button onclick="useCurrentTime()">⏰ Tani</button>
+                            <input type="time" id="timeSelect" value="09:00">
+                        </div>
+                        <div class="mobile-search-row" style="display:none;">
+                            <button id="searchHallsBtn" style="width:100%;">Kërko</button>
+                        </div>
                     </div>
-                    <div class="mobile-time-row">
-                        <input type="time" id="timeSelect" value="09:00">
-                        <button onclick="useCurrentTime()">⏰ Tani</button>
-                    </div>
-                </div>
             </div>
             <div id=\"alerts\"></div>
             <div id=\"results\" style=\"display:none;\;\">
@@ -319,6 +324,7 @@ HTML_TEMPLATE = """
     <script>
         let scheduleData = {};
         let hallsList = [];
+        let searchTriggered = false;
 
         function showAlert(message, type = 'info') {
             const alerts = document.getElementById('alerts');
@@ -336,6 +342,14 @@ HTML_TEMPLATE = """
             const time = now.toLocaleTimeString('sq-AL', { hour: '2-digit', minute: '2-digit' });
             document.getElementById('currentTime').textContent = day + ', ' + time;
         }
+        
+        function showSearchButton() {
+            // Always show the search button in its own row on mobile
+            var searchRow = document.querySelector('.mobile-search-row');
+            if (searchRow) {
+                searchRow.style.display = 'block';
+            }
+        }
 
         window.addEventListener('DOMContentLoaded', function() {
             updateCurrentTime();
@@ -351,15 +365,25 @@ HTML_TEMPLATE = """
             }
             // Fetch schedule data
             fetchSchedule();
-            // Add listeners for auto-update
-            document.getElementById('daySelect').addEventListener('change', findEmptyHalls);
-            document.getElementById('timeSelect').addEventListener('input', findEmptyHalls);
+            // Add listeners for search trigger
+            document.getElementById('daySelect').addEventListener('change', function() {
+                searchTriggered = true;
+                showSearchButton();
+            });
+            document.getElementById('timeSelect').addEventListener('input', function() {
+                searchTriggered = true;
+                showSearchButton();
+            });
+            document.getElementById('searchHallsBtn').onclick = function() {
+                findEmptyHalls();
+            };
         });
 
         function useCurrentTime() {
             const now = new Date();
             const time = now.toTimeString().slice(0, 5);
             document.getElementById('timeSelect').value = time;
+            searchTriggered = true;
             findEmptyHalls();
         }
 
@@ -382,6 +406,10 @@ HTML_TEMPLATE = """
         }
 
         function findEmptyHalls() {
+            if (!searchTriggered) {
+                document.getElementById('results').style.display = 'none';
+                return;
+            }
             if (hallsList.length === 0) {
                 document.getElementById('results').style.display = 'none';
                 document.getElementById('alerts').innerHTML = '';
@@ -390,6 +418,10 @@ HTML_TEMPLATE = """
             }
             const day = document.getElementById('daySelect').value;
             const time = document.getElementById('timeSelect').value;
+            if (!day || !time) {
+                document.getElementById('results').style.display = 'none';
+                return;
+            }
             const grid = document.getElementById('hallGrid');
             grid.innerHTML = '';
             document.getElementById('results').style.display = 'block';
@@ -413,12 +445,30 @@ HTML_TEMPLATE = """
             if (occ && occ.parentElement) occ.parentElement.style.display = 'none';
         }
 
+        function showSearchButton() {
+            // Only show the search button if not already present
+            if (!document.getElementById('searchHallsBtn')) {
+                const timeRow = document.querySelector('.mobile-time-row');
+                if (timeRow) {
+                    const btn = document.createElement('button');
+                    btn.id = 'searchHallsBtn';
+                    btn.textContent = 'Kërko';
+                    btn.style.marginLeft = '10px';
+                    btn.onclick = function() {
+                        findEmptyHalls();
+                    };
+                    timeRow.appendChild(btn);
+                }
+            }
+        }
+
         function fetchSchedule() {
             document.getElementById('loading').style.display = 'block';
             fetch('/api/schedule').then(r => r.json()).then(data => {
                 scheduleData = data.schedule || {};
                 hallsList = data.halls || [];
                 document.getElementById('loading').style.display = 'none';
+                // Do not show results until user triggers search
                 findEmptyHalls();
             }).catch(() => {
                 document.getElementById('loading').style.display = 'none';
